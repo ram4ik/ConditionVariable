@@ -2,10 +2,11 @@
 """Producers serving soup for Consumer to eat"""
 
 import queue
-import threading
+# import threading
+import multiprocessing as mp
 import time
 
-serving_line = queue.Queue(maxsize=5)
+serving_line = mp.Queue(5)
 
 
 def cpu_work(work_units):
@@ -14,17 +15,16 @@ def cpu_work(work_units):
         x += 1
 
 
-def soup_producer():
+def soup_producer(serving_line):
     for i in range(20):  # serve 20 bowls of soup
         serving_line.put_nowait('Bowl #'+str(i))
-        print('Served Bowl #', str(i), '- remaining capacity:', \
-              serving_line.maxsize-serving_line.qsize())
+        print('Served Bowl #', str(i), '- remaining capacity:', serving_line._maxsize-serving_line.qsize())
         time.sleep(0.2)  # time to serve a bowl of soup
     serving_line.put_nowait('no soup for you!')
     serving_line.put_nowait('no soup for you!')
 
 
-def soup_consumer():
+def soup_consumer(serving_line):
     while True:
         bowl = serving_line.get()
         if bowl == 'no soup for you!':
@@ -36,5 +36,5 @@ def soup_consumer():
 
 if __name__ == '__main__':
     for consumer in range(2):
-        threading.Thread(target=soup_consumer).start()
-    threading.Thread(target=soup_producer).start()
+        mp.Process(target=soup_consumer, args=(serving_line,)).start()
+    mp.Process(target=soup_producer, args=(serving_line,)).start()
