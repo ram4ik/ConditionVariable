@@ -24,5 +24,6 @@ def soup_consumer():
 
 
 if __name__ == '__main__':
-    threading.Thread(target=soup_consumer).start()
+    for consumer in range(2):
+        threading.Thread(target=soup_consumer).start()
     threading.Thread(target=soup_producer).start()
