@@ -8,6 +8,12 @@ import time
 serving_line = queue.Queue(maxsize=5)
 
 
+def cpu_work(work_units):
+    x = 0
+    for work in range(work_units * 1_000_000):
+        x += 1
+
+
 def soup_producer():
     for i in range(20):  # serve 20 bowls of soup
         serving_line.put_nowait('Bowl #'+str(i))
@@ -24,7 +30,8 @@ def soup_consumer():
         if bowl == 'no soup for you!':
             break
         print('Ate', bowl)
-        time.sleep(0.3)  # time to eat a bowl of soup
+        # time.sleep(0.3)  # time to eat a bowl of soup
+        cpu_work(4)
 
 
 if __name__ == '__main__':
