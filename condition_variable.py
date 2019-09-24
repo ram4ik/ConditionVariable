@@ -19,7 +19,7 @@ def hungry_person(person_id):
             if soup_servings > 0:
                 soup_servings -= 1 # it's your turn take some soup!
                 print('Person', person_id, 'took soup! Servings left:', soup_servings)
-                soup_taken.notify()
+                soup_taken.notify_all()
 
 
 if __name__ == '__main__':
