@@ -13,7 +13,7 @@ def hungry_person(person_id):
     global soup_servings
     while soup_servings > 0:
         with slowcooker_lid:
-            while (person_id == (soup_servings % 2)) and (soup_servings > 0): # check if it's your turn
+            while (person_id == (soup_servings % 5)) and (soup_servings > 0): # check if it's your turn
                 print('Person', person_id, 'checked... then put the lid back.')
                 soup_taken.wait()
             if soup_servings > 0:
@@ -22,7 +22,6 @@ def hungry_person(person_id):
                 soup_taken.notify()
 
 
-
 if __name__ == '__main__':
-    for person in range(2):
+    for person in range(5):
         threading.Thread(target=hungry_person, args=(person,)).start()
