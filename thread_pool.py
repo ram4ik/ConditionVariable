@@ -1,9 +1,10 @@
 import threading
+import os
 from concurrent.futures import ProcessPoolExecutor
 
 
 def vegetable_chopper(vegetable_id):
-    name = threading.current_thread().getName()
+    name = os.getpid()
     print(name, 'chopper vegetable', vegetable_id)
 
 
